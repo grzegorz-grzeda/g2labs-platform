@@ -24,8 +24,7 @@ if((DEFINED G2LABS_PLATFORM_TARGET) AND(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${G2L
     add_subdirectory(${G2LABS_PLATFORM_TARGET})
     set(G2LABS_PLATFORM_MAIN_NAME ${G2LABS_PLATFORM_TARGET})
 else()
-    add_subdirectory(default)
-    set(G2LABS_PLATFORM_MAIN_NAME "default")
+    message(FATAL_ERROR "Target platform not defined! Use cmake/setup.cmake 'g2labs_platform_set()'.")
 endif()
 
 file(GENERATE OUTPUT ${CMAKE_BINARY_DIR}/platform.txt CONTENT ${G2LABS_PLATFORM_MAIN_NAME})
