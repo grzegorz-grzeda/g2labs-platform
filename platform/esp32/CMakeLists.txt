@@ -54,12 +54,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(elf_file ${CMAKE_PROJECT_NAME}.elf)
 add_executable(${elf_file} main.c)
 
-if(NOT(CMAKE_PROJECT_NAME STREQUAL "g2labs-platform"))
-    message(hello)
-    target_link_libraries(${elf_file}
-        ${CMAKE_PROJECT_NAME}
-    )
-endif()
+target_link_libraries(${elf_file} PRIVATE idf::driver)
+
+target_link_libraries(${elf_file} PRIVATE ${CMAKE_PROJECT_NAME})
 
 if(DEFINED G2LABS_PLATFORM_MAIN_FS_IMAGE_DIR)
     spiffs_create_partition_image(storage ${G2LABS_PLATFORM_MAIN_FS_IMAGE_DIR} FLASH_IN_PROJECT)
@@ -75,5 +72,4 @@ add_custom_target(burn
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     USES_TERMINAL
 )
-
 idf_build_executable(${elf_file})
