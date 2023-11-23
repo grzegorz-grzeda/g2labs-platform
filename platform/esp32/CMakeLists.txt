@@ -20,6 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
+set(ESP32_PARTITION_TABLE_OFFSET 0x9000)
+set(ESP32_PARTITION_TABLE_FILE_PATH ${CMAKE_CURRENT_LIST_DIR}/${ESP_TARGET}/partition_table.csv)
+configure_file(${ESP_TARGET}/partition-table-sdkconfig.template ${CMAKE_CURRENT_LIST_DIR}/${ESP_TARGET}/partition-table-sdkconfig @ONLY)
+
+list(APPEND ESP32_SDKCONFIG_FILES ${CMAKE_CURRENT_LIST_DIR}/${ESP_TARGET}/sdkconfig.defaults)
+list(APPEND ESP32_SDKCONFIG_FILES ${CMAKE_CURRENT_LIST_DIR}/${ESP_TARGET}/partition-table-sdkconfig)
+
 include($ENV{IDF_PATH}/tools/cmake/idf.cmake)
 
 idf_build_process("${ESP_TARGET}"
@@ -39,7 +46,7 @@ idf_build_process("${ESP_TARGET}"
     esp_timer
     fatfs
     SDKCONFIG ${CMAKE_BINARY_DIR}/sdkconfig
-    SDKCONFIG_DEFAULTS ${CMAKE_CURRENT_LIST_DIR}/${ESP_TARGET}/sdkconfig.defaults
+    SDKCONFIG_DEFAULTS ${ESP32_SDKCONFIG_FILES}
     BUILD_DIR ${CMAKE_BINARY_DIR})
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -47,9 +54,12 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(elf_file ${CMAKE_PROJECT_NAME}.elf)
 add_executable(${elf_file} main.c)
 
-target_link_libraries(${elf_file}
-    ${CMAKE_PROJECT_NAME}
-)
+if(NOT(CMAKE_PROJECT_NAME STREQUAL "g2labs-platform"))
+    message(hello)
+    target_link_libraries(${elf_file}
+        ${CMAKE_PROJECT_NAME}
+    )
+endif()
 
 if(DEFINED G2LABS_PLATFORM_MAIN_FS_IMAGE_DIR)
     spiffs_create_partition_image(storage ${G2LABS_PLATFORM_MAIN_FS_IMAGE_DIR} FLASH_IN_PROJECT)
