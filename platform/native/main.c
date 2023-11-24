@@ -23,6 +23,7 @@
  */
 extern void application_main(void);
 
-void app_main(void) {
+int main(void) {
     application_main();
+    return 0;
 }
