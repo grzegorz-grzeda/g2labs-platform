@@ -56,7 +56,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(elf_file ${CMAKE_PROJECT_NAME}.elf)
 add_executable(${elf_file} main.c)
 
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(g2labs-platform
     PRIVATE idf::nvs_flash
     PRIVATE idf::esp_wifi
 )
