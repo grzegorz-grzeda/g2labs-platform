@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
+target_sources(${PROJECT_NAME} PRIVATE g2labs-platform.c)
+
 set(ESP32_PARTITION_TABLE_OFFSET 0x9000)
 set(ESP32_PARTITION_TABLE_FILE_PATH ${CMAKE_CURRENT_LIST_DIR}/${ESP_TARGET}/partition_table.csv)
 configure_file(${ESP_TARGET}/partition-table-sdkconfig.template ${CMAKE_CURRENT_LIST_DIR}/${ESP_TARGET}/partition-table-sdkconfig @ONLY)
@@ -54,7 +56,16 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(elf_file ${CMAKE_PROJECT_NAME}.elf)
 add_executable(${elf_file} main.c)
 
-target_link_libraries(${elf_file} PRIVATE idf::driver)
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE idf::nvs_flash
+    PRIVATE idf::esp_wifi
+)
+
+target_link_libraries(${elf_file}
+    PRIVATE idf::driver
+    PRIVATE idf::nvs_flash
+    PRIVATE idf::esp_wifi
+)
 
 target_link_libraries(${elf_file} PRIVATE ${CMAKE_PROJECT_NAME})
 

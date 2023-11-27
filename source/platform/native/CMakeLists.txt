@@ -20,9 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-cmake_minimum_required(VERSION 3.22)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-project(g2labs-platform LANGUAGES C VERSION 1.0.0)
-add_library(${PROJECT_NAME})
+target_sources(${PROJECT_NAME} PRIVATE g2labs-platform.c)
 
-add_subdirectory(source)
+set(executable_file ${PROJECT_NAME}-run)
+add_executable(${executable_file} main.c)
+
+if(NOT(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME))
+    target_link_libraries(${executable_file} PRIVATE ${CMAKE_PROJECT_NAME})
+endif()

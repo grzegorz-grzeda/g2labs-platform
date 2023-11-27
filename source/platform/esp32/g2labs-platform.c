@@ -21,8 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-extern void application_main(void);
+#include "g2labs-platform.h"
+#include "esp_system.h"
 
-void app_main(void) {
-    application_main();
+void platform_reset(void) {
+    esp_restart();
 }

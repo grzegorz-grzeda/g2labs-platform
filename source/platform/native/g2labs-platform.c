@@ -21,9 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-extern void application_main(void);
+#include "g2labs-platform.h"
 
-int main(void) {
-    application_main();
-    return 0;
-}
+void platform_reset(void) {}
